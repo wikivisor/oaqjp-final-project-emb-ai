@@ -21,6 +21,19 @@ def emotion_detector(text_to_analyze):
     # Make a POST request to the API with the payload and headers
     response = requests.post( url, json=input_json, headers=headers, timeout=10, )
 
+    status_code = response.status_code
+
+    if status_code == 400:
+        emotions = {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None
+        }
+        return emotions
+
     result = json.loads(response.text)
 
     emotions = result['emotionPredictions'][0]['emotion']
@@ -30,3 +43,4 @@ def emotion_detector(text_to_analyze):
     emotions["dominant_emotion"] = max_emotion
 
     return emotions
+    
